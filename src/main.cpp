@@ -1,16 +1,31 @@
 #include <iostream>
-#include <Eigen/Core>
 #include <ros/ros.h>
-#include <gtsam/nonlinear/NonlinearFactorGraph.h>
-#include <gtsam/nonlinear/LevenbergMarquardtOptimizer.h>
-#include <gtsam/slam/PriorFactor.h>
-#include <gtsam/slam/BetweenFactor.h>
-#include <gtsam/geometry/Pose3.h>
+#include <core_msgs/string_w_header.h>
+#include <nav_msgs/Odometry.h>
+#include <tf/tf.h>
+
+#include "gps_module.h"
+
+GPSModule gpsmodule;
+
+void cb_gps(core_msgs::string_w_header::ConstPtr msg) {
+    core_msgs::string_w_header data = *msg;
+    bool gps_data = gpsmodule.cb_gps(data);
+    if(gps_data) {
+        std::cout<<"FUCKMAN"<<std::endl;
+    }
+
+}
+
 
 int main(int argc, char ** argv) {
+	ros::init(argc, argv, "lidar_slam_node");
+	ros::NodeHandle nh;
 
-    Eigen::Matrix3f A;
-    A<<1, 2, 3, 4, 5, 6, 7, 8, 9;
-    std::cout<<A<<std::endl;
+    ROS_INFO("SLAM based navigation module");
+	ros::Subscriber sub_gps = nh.subscribe<core_msgs::string_w_header>("/gps_bypass", 100, cb_gps);
+
+    ros::spin();
+
     return 0;
 }

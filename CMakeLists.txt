@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  core_msgs
   tf
 )
 
@@ -39,7 +40,17 @@ file(GLOB SOURCES
      ${PROJECT_SOURCE_DIR}/include/lidar_slam/*.h)
 
 catkin_package(
-    CATKIN_DEPENDS geometry_msgs nav_msgs pcl_conversions pcl_msgs pcl_ros roscpp sensor_msgs std_msgs tf
+    CATKIN_DEPENDS 
+        geometry_msgs 
+        nav_msgs 
+        pcl_conversions 
+        pcl_msgs 
+        pcl_ros  
+        roscpp 
+        sensor_msgs 
+        std_msgs 
+        core_msgs 
+        tf
 )
 
 include_directories(
@@ -57,6 +68,18 @@ add_executable(${PROJECT_NAME}_node
                ${Eigen_LIBRARIES})
 
 target_link_libraries(${PROJECT_NAME}_node
+    ${catkin_LIBRARIES}
+    Eigen3::Eigen
+    gtsam
+)
+
+
+add_executable(example
+               src/imuexample.cpp
+               ${SOURCES}
+               ${Eigen_LIBRARIES})
+
+target_link_libraries(example
     ${catkin_LIBRARIES}
     Eigen3::Eigen
     gtsam
