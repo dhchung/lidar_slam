@@ -12,7 +12,6 @@ void cb_gps(core_msgs::string_w_header::ConstPtr msg) {
     core_msgs::string_w_header data = *msg;
     bool gps_data = gpsmodule.cb_gps(data);
     if(gps_data) {
-        std::cout<<"FUCKMAN"<<std::endl;
     }
 
 }

@@ -30,6 +30,8 @@ bool GPSModule::cb_gps(core_msgs::string_w_header msg){
         gps_values[5] = values.second["signal_type"]; //signal_type
         gps_values[8] = values.second["SOG"]; //SOG
         gps_values[9] = values.second["COG"]; //COG
+
+        return false;
     }
 
     if(values.first.compare("$GNGGA") == 0) {
@@ -39,6 +41,8 @@ bool GPSModule::cb_gps(core_msgs::string_w_header msg){
             gps_values[3] = values.second["altitude"]; //altitude
             gps_values[6] = values.second["Fix"]; //Fix
             gps_values[7] = values.second["HDOP"]; //HDOP
+            return false;
+
         } else {
             return false;
         }
@@ -72,9 +76,6 @@ nav_msgs::Odometry GPSModule::gps2odom(long double time, std::vector<double> gps
     double longitude = gps_data[2];
     double altitude = gps_data[3];
     double yaw = gps_data[4];
-
-    printf("latitude in MINE : %.16f\n", latitude);
-    printf("longitude in MINE : %.16f\n", longitude);
 
     double utmx;
     double utmy;
